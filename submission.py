@@ -75,6 +75,7 @@ API_KEY = os.getenv("API_KEY")  # Get API key from environment variables
 
 TASK_ID = "19-stolen-model-detection"
 FILE_PATH = "./submission.csv"  # replace with your actual file path
+FEATURES_DF = "./weight_features.csv"  # replace with your actual features file path
 
 SUBMIT = True  # Set to True to enable submission
 
@@ -83,9 +84,12 @@ def die(msg):
     sys.exit(1)
 
 if SUBMIT:
+    features_df = pd.read_csv(FEATURES_DF)
+    submission_df = features_df[["id", "score"]]
+    submission_df.to_csv(FILE_PATH, index=False)
+
     if not os.path.isfile(FILE_PATH):
         die(f"File not found: {FILE_PATH}")
-
     try:
         with open(FILE_PATH, "rb") as f:
             files = {

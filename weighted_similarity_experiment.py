@@ -164,12 +164,20 @@ def raw_weight_score(features):
     - classifier head and BN stats are useful stealing clues
     """
 
+    # score = (
+    #     0.30 * features["fc_cosine"] +
+    #     0.25 * features["mean_cosine"] +
+    #     0.20 * features["conv_cosine"] +
+    #     0.15 * features["bn_cosine"] +
+    #     0.10 * features["exact_layer_fraction"]
+    # ) # Current Best score 0.574 on leaderboard
+
     score = (
-        0.40 * features["fc_cosine"] +
-        0.20 * features["mean_cosine"] +
-        0.20 * features["conv_cosine"] +
+        0.60 * features["fc_cosine"] +
+        0.15 * features["mean_cosine"] +
         0.10 * features["bn_cosine"] +
-        0.10 * features["exact_layer_fraction"]
+        0.10 * features["exact_layer_fraction"] +
+        0.05 * features["mean_sign_agreement"]
     )
 
     return score
@@ -246,13 +254,13 @@ def main():
         row["score"] = norm_score
 
     features_df = pd.DataFrame(rows)
+    #features_df["rank_score"] = features_df["raw_score"].rank(method="average", pct=True)
+    features_df["score"] = features_df["raw_score"].rank(pct=True)
+
+    
     features_df.to_csv(OUTPUT_FEATURES, index=False)
 
-    submission_df = features_df[["id", "score"]]
-    submission_df.to_csv(OUTPUT_SUBMISSION, index=False)
-
     print(f"Saved features to: {OUTPUT_FEATURES}")
-    print(f"Saved submission to: {OUTPUT_SUBMISSION}")
 
 
 if __name__ == "__main__":
