@@ -164,20 +164,12 @@ def raw_weight_score(features):
     - classifier head and BN stats are useful stealing clues
     """
 
-    # score = (
-    #     0.35 * features["mean_cosine"] +
-    #     0.20 * features["mean_sign_agreement"] +
-    #     0.15 * features["conv_cosine"] +
-    #     0.10 * features["bn_cosine"] +
-    #     0.10 * features["fc_cosine"] +
-    #     0.10 * features["exact_layer_fraction"]
-    # )
     score = (
-        0.45 * features["conv_cosine"] +
-        0.25 * features["bn_cosine"] +
-        0.15 * features["mean_sign_agreement"] +
-        0.10 * features["mean_cosine"] +
-        0.05 * features["exact_layer_fraction"]
+        0.40 * features["fc_cosine"] +
+        0.20 * features["mean_cosine"] +
+        0.20 * features["conv_cosine"] +
+        0.10 * features["bn_cosine"] +
+        0.10 * features["exact_layer_fraction"]
     )
 
     return score
