@@ -173,11 +173,10 @@ def raw_weight_score(features):
     # ) # Current Best score 0.574 on leaderboard
 
     score = (
-        0.60 * features["fc_cosine"] +
-        0.15 * features["mean_cosine"] +
+        0.70 * features["fc_cosine"] +
+        0.10 * features["mean_cosine"] +
         0.10 * features["bn_cosine"] +
-        0.10 * features["exact_layer_fraction"] +
-        0.05 * features["mean_sign_agreement"]
+        0.10 * features["exact_layer_fraction"]
     )
 
     return score
@@ -248,14 +247,25 @@ def main():
         rows.append(row)
         raw_scores.append(score)
 
-    normalized_scores = minmax_normalize(raw_scores)
+    # normalized_scores = minmax_normalize(raw_scores)
 
-    for row, norm_score in zip(rows, normalized_scores):
-        row["score"] = norm_score
+    # for row, norm_score in zip(rows, normalized_scores):
+    #     row["score"] = norm_score
 
     features_df = pd.DataFrame(rows)
-    #features_df["rank_score"] = features_df["raw_score"].rank(method="average", pct=True)
-    features_df["score"] = features_df["raw_score"].rank(pct=True)
+    features_df["score"] = features_df[
+        [
+            "mean_cosine",
+            "conv_cosine",
+            "bn_cosine",
+            "fc_cosine",
+            "exact_layer_fraction",
+        ]
+    ].max(axis=1)
+
+    features_df["score"] = features_df["score"].rank(pct=True)
+
+    # features_df["score"] = features_df["raw_score"].rank(pct=True)
 
     
     features_df.to_csv(OUTPUT_FEATURES, index=False)
