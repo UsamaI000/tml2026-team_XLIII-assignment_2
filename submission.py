@@ -74,7 +74,7 @@ BASE_URL = "http://34.63.153.158"
 API_KEY = os.getenv("API_KEY")  # Get API key from environment variables
 
 TASK_ID = "19-stolen-model-detection"
-FILE_PATH = "./outputs_stagewise/submission_v2_fc_dominant_stage.csv"  # replace with your actual file path
+FILE_PATH = "./outputs_stagewise/submission_v7_stage_rank_ensemble.csv"  # replace with your actual file path
 # FEATURES_DF = "./weight_features.csv"  # replace with your actual features file path
 
 SUBMIT = True  # Set to True to enable submission
