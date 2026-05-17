@@ -50,3 +50,5 @@ shadow_checkpoints/
 
 # ignore mia.sub for cluster
 mia.sub
+
+~$weighted_score_exp.xlsx
