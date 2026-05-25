@@ -154,6 +154,19 @@ def compute_scores(df: pd.DataFrame, variant: str) -> pd.DataFrame:
 
     elif variant == "single_conf_corr":
         df["raw_score"] = df["confidence_corr_rank"]
+    
+    elif variant == "simple_top5_top1":
+        df["raw_score"] = (
+            0.70 * df["top5_overlap_rank"] +
+            0.30 * df["top1_agreement_rank"]
+        )
+
+    elif variant == "simple_top5_samewrong":
+        df["raw_score"] = (
+            0.75 * df["top5_overlap_rank"] +
+            0.25 * df["same_wrong_rank"]
+        )
+
     else:
         raise ValueError(f"Unknown variant: {variant}")
 
@@ -218,6 +231,8 @@ def main():
             "single_confidence",
             "single_margin",
             "single_conf_corr",
+            "simple_top5_top1",
+            "simple_top5_samewrong",
         ],
     )
 
