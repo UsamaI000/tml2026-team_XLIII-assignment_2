@@ -51,45 +51,6 @@ model.load_state_dict(state_dict, strict=True)
 model.eval()
 ```
 
-## Submission Format
-
-Your submission must be a CSV file with the following specifications:
-
-**Required Format:**
-- File extension: `.csv`
-- Exactly two columns: `id`, `score` (column names must match exactly)
-- Exactly 360 rows (one per suspect model, ids 0-359)
-- Each id must appear exactly once
-
-**Example:**
-```csv
-id,score
-0,0.95
-1,0.23
-...
-359,0.78
-```
-
-**Score Values:**
-- Numeric values representing confidence that the model is stolen
-- Can be probabilities (0.0-1.0) or raw model scores
-- Must be finite numeric values (no strings, NaN, or infinity)
-- Higher scores indicate higher likelihood of being stolen
-
-## Implementation
-
-Implement your model stealing detection algorithm in `submission.py`. Consider analyzing:
-- Model architecture similarities
-- Weight distributions and statistical properties
-- Output behavior on test samples
-- Other features that might indicate model theft
-
-## Evaluation
-
-Models are ranked by their confidence scores, evaluated using:
-- **Metric**: True Positive Rate (TPR) at False Positive Rate (FPR) = 0.05
-- The evaluation system will rank submissions by score values
-
 ## Resources
 
 - See `task_template.py` for model loading examples
