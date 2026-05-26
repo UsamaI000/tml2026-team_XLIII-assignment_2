@@ -151,5 +151,3 @@ Notes and reproducibility details:
 - If you change `--variant` or the features CSV, leaderboard results will differ.
 - Random seeds are not required for the scoring step (it is deterministic given the same features CSV). If you regenerate the features CSV from raw model runs, use seed `42` where applicable to match our preprocessing pipeline.
 
-If you want, I can also add a convenience Makefile or small wrapper script to run these steps automatically—should I add that? 
-
