@@ -96,3 +96,60 @@ Models are ranked by their confidence scores, evaluated using:
 - See `submission.py` for submission format requirements and validation rules
 - CIFAR-100 dataset can be automatically downloaded during model evaluation
 
+## Reproducing Our Best Leaderboard Result
+
+Follow these exact steps to recreate the submission file that produced our best leaderboard score.
+
+1. Create and activate the virtual environment (Windows example):
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+2. Install required packages:
+
+```bash
+pip install torch torchvision pandas numpy scikit-learn requests python-dotenv safetensors
+```
+
+3. (Optional) Copy the example environment file and set your API key (required for online submission):
+
+```bash
+copy env.example .env
+# edit .env and set API_KEY to your key
+```
+
+4. Generate the scored functional submission (this reproduces the exact CSV we submitted):
+
+```bash
+python score_functional_features.py \
+	--features outputs_functional/features_train_target_target_aug_n-1_temp2.0_seed42.csv \
+	--variant simple_top5_samewrong \
+	--out_dir outputs_functional_scored
+```
+
+This will write two files into `outputs_functional_scored/`:
+
+- `scored_features_train_target_target_aug_n-1_temp2.0_seed42_simple_top5_samewrong.csv` (scored features with diagnostics)
+- `submission_features_train_target_target_aug_n-1_temp2.0_seed42_simple_top5_samewrong.csv` (the final submission file)
+
+5. (Optional) Submit the produced CSV to the server using the provided submit helper:
+
+```bash
+# Ensure .env contains API_KEY
+python submission.py
+```
+
+`submission.py` is pre-configured to upload the file at
+`./outputs_functional_scored/submission_features_train_target_target_aug_n-1_temp2.0_seed42_simple_top5_samewrong.csv`.
+
+Notes and reproducibility details:
+
+- The `--variant simple_top5_samewrong` scoring rule (in `score_functional_features.py`) produced the best leaderboard score for our run.
+- The input features file used is `outputs_functional/features_train_target_target_aug_n-1_temp2.0_seed42.csv` (already included in the repository outputs).
+- If you change `--variant` or the features CSV, leaderboard results will differ.
+- Random seeds are not required for the scoring step (it is deterministic given the same features CSV). If you regenerate the features CSV from raw model runs, use seed `42` where applicable to match our preprocessing pipeline.
+
+If you want, I can also add a convenience Makefile or small wrapper script to run these steps automatically—should I add that? 
+
