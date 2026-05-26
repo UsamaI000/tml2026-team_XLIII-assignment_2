@@ -167,6 +167,67 @@ def compute_scores(df: pd.DataFrame, variant: str) -> pd.DataFrame:
             0.25 * df["same_wrong_rank"]
         )
 
+    elif variant == "top5_samewrong_90_10":
+        df["raw_score"] = (
+            0.90 * df["top5_overlap_rank"] +
+            0.10 * df["same_wrong_rank"]
+        )
+
+    elif variant == "top5_samewrong_80_20":
+        df["raw_score"] = (
+            0.80 * df["top5_overlap_rank"] +
+            0.20 * df["same_wrong_rank"]
+        )
+
+    elif variant == "top5_samewrong_70_30":
+        df["raw_score"] = (
+            0.70 * df["top5_overlap_rank"] +
+            0.30 * df["same_wrong_rank"]
+        )
+
+    elif variant == "top5_samewrong_60_40":
+        df["raw_score"] = (
+            0.60 * df["top5_overlap_rank"] +
+            0.40 * df["same_wrong_rank"]
+        )
+
+    elif variant == "top5_samewrong_50_50":
+        df["raw_score"] = (
+            0.50 * df["top5_overlap_rank"] +
+            0.50 * df["same_wrong_rank"]
+        )
+
+    elif variant == "top5_samewrong_top1":
+        df["raw_score"] = (
+            0.70 * df["top5_overlap_rank"] +
+            0.20 * df["same_wrong_rank"] +
+            0.10 * df["top1_agreement_rank"]
+        )
+
+    elif variant == "top5_top1_samewrong":
+        df["raw_score"] = (
+            0.75 * df["top5_overlap_rank"] +
+            0.15 * df["top1_agreement_rank"] +
+            0.10 * df["same_wrong_rank"]
+        )
+
+    elif variant == "max_top5_samewrong":
+        df["raw_score"] = df[
+            [
+                "top5_overlap_rank",
+                "same_wrong_rank",
+            ]
+        ].max(axis=1)
+
+    elif variant == "max_top5_top1_samewrong":
+        df["raw_score"] = df[
+            [
+                "top5_overlap_rank",
+                "top1_agreement_rank",
+                "same_wrong_rank",
+            ]
+        ].max(axis=1)
+
     else:
         raise ValueError(f"Unknown variant: {variant}")
 
@@ -233,6 +294,11 @@ def main():
             "single_conf_corr",
             "simple_top5_top1",
             "simple_top5_samewrong",
+            "top5_samewrong_90_10",
+            "top5_samewrong_80_20",
+            "top5_samewrong_70_30",
+            "top5_samewrong_top1",
+            "max_top5_samewrong",
         ],
     )
 
